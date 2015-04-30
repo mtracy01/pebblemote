@@ -3,32 +3,34 @@
 #define KEY_DATA 5
 
 static Window *window;
-static TextLayer *text_forward;   /* Top    Layer   */
+//static TextLayer *text_forward;   /* Top    Layer   */
 static TextLayer *text_play;     /*  Middle Layer  */
-static TextLayer *text_back;    /*   Bottom Layer */
+//static TextLayer *text_back;    /*   Bottom Layer */
+static TextLayer *text_layer;
+
 
 //Handle play request
 //static void sendMessage(int num);
 static void send_int(int key, int value);
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
-  //text_layer_set_text(text_layer, "Select");
+  text_layer_set_text(text_layer, "Play/Pause");
   send_int(1,1);
   
 }
 
 //Handle forward request
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
-  //text_layer_set_text(text_layer, "Up");
+  text_layer_set_text(text_layer, "Forward");
   //sendMessage(0);
-  send_int(1,1);
+  //send_int(1,1);
 }
 
 //Handle back request
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
-  //text_layer_set_text(text_layer, "Down");
+  text_layer_set_text(text_layer, "Back");
   //sendMessage(2);
-  send_int(1,1);
+  //send_int(1,1);
 }
 
 static void click_config_provider(void *context) {
@@ -40,27 +42,27 @@ static void click_config_provider(void *context) {
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
-  text_forward =  text_layer_create((GRect){.origin = {0,72}, .size = { bounds.size.w, 20}});
-  text_play    =  text_layer_create((GRect){.origin = {0,72}, .size = { bounds.size.w, 20}});
-  text_back    =  text_layer_create((GRect){.origin = {0,72}, .size = { bounds.size.w, 20}});
+  //text_forward =  text_layer_create((GRect){.origin = {0,72}, .size = { bounds.size.w, 20}});
+  text_play    =  text_layer_create((GRect){.origin = { 0, 72}, .size = { bounds.size.w, 20 } });
+  //text_back    =  text_layer_create((GRect){.origin = {0,72}, .size = { bounds.size.w, 20}});
  
-  text_layer_set_text(text_forward, "Forward");
+  //text_layer_set_text(text_forward, "Forward");
   text_layer_set_text(text_play, "Play/Pause");
-  text_layer_set_text(text_back, "Back");
+  //text_layer_set_text(text_back, "Back");
   
  // text_layer_set_text_alignment(text_forward, GAlignTop);
   text_layer_set_text_alignment(text_play, GTextAlignmentCenter);
  // text_layer_set_text_alignment(text_back, GAlignTop);
-  /*text_layer = text_layer_create((GRect) { .origin = { 0, 72 }, .size = { bounds.size.w, 20 } });
+  text_layer = text_layer_create((GRect) { .origin = { 0, 72 }, .size = { bounds.size.w, 20 } });
   text_layer_set_text(text_layer, "Press a button");
   text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
-  */
+  layer_add_child(window_layer, text_layer_get_layer(text_layer));
 }
 
 static void window_unload(Window *window) {
   text_layer_destroy(text_play);
-  text_layer_destroy(text_back);
-  text_layer_destroy(text_forward);
+  //text_layer_destroy(text_back);
+  //text_layer_destroy(text_forward);
 }
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
@@ -105,6 +107,10 @@ static void init(void) {
   app_message_register_inbox_dropped(inbox_dropped_callback);
   app_message_register_outbox_failed(outbox_failed_callback);
   app_message_register_outbox_sent(outbox_sent_callback);
+  
+   // Open AppMessage
+  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
+
   
   window = window_create();
   window_set_click_config_provider(window, click_config_provider);
