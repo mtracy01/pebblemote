@@ -2,8 +2,15 @@ package outmod.pebblemote;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+import com.getpebble.android.kit.PebbleKit;
+
+import java.util.UUID;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -12,6 +19,20 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final UUID uuid = UUID.fromString("3f31b449-d008-4394-9626-cca6566a6f67");
+        final boolean connected = PebbleKit.isWatchConnected(getApplicationContext());
+        Log.i(getLocalClassName(), "Pebble is " + (connected ? "connected" : "not connected"));
+        Button testButton = (Button)findViewById(R.id.testButton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //If pebble is connected, attempt to send a notification
+                if(connected){
+                    PebbleKit.startAppOnPebble(getApplicationContext(),uuid);
+                }
+            }
+        });
+
     }
 
 
