@@ -9,6 +9,12 @@ import android.view.View;
 import android.widget.Button;
 
 import com.getpebble.android.kit.PebbleKit;
+import com.google.android.gms.cast.Cast;
+import com.google.android.gms.cast.CastDevice;
+import com.google.android.gms.cast.CastMediaControlIntent;
+import com.google.android.gms.cast.CastStatusCodes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
 
 import java.util.UUID;
 
@@ -17,11 +23,18 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //default initialization parameters
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //parameter setup
+        //Pebble setup
         final UUID uuid = UUID.fromString("3f31b449-d008-4394-9626-cca6566a6f67");
         final boolean connected = PebbleKit.isWatchConnected(getApplicationContext());
         Log.i(getLocalClassName(), "Pebble is " + (connected ? "connected" : "not connected"));
+
+        //Google cast API setup
+        //MediaRouter mediaRouter =
         Button testButton = (Button)findViewById(R.id.testButton);
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +48,15 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    public void onStart(){
+
+    }
+
+    @Override
+    public void onStop(){
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
