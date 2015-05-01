@@ -1,5 +1,6 @@
 package outmod.pebblemote;
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.getpebble.android.kit.PebbleKit;
+import com.getpebble.android.kit.util.PebbleDictionary;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
@@ -43,6 +45,13 @@ public class MainActivity extends ActionBarActivity {
                 if(connected){
                     PebbleKit.startAppOnPebble(getApplicationContext(),uuid);
                 }
+            }
+        });
+
+        PebbleKit.registerReceivedDataHandler(this, new PebbleKit.PebbleDataReceiver(uuid) {
+            @Override
+            public void receiveData(Context context, int i, PebbleDictionary pebbleDictionary) {
+                Log.i(getLocalClassName(),"Got a message!");
             }
         });
 
