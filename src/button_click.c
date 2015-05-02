@@ -10,7 +10,7 @@ static TextLayer *text_layer;
 
 
 //Handle play request
-//static void sendMessage(int num);
+
 static void send_int(int key, int value);
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
@@ -132,23 +132,6 @@ static void send_int(int key, int value) {
   dict_write_int(iter, key, &value, sizeof(int), true);
   app_message_outbox_send();
 }
-/*static void sendMessage(int num){
-  //Send the message through a dictionary (as required by Pebble)
-  DictionaryIterator* iter;
-  app_message_outbox_begin(&iter);
-  APP_LOG(APP_LOG_LEVEL_INFO,"GOT HERE");
-  //Create the key value pair storing our data
-  int key=1;
-  int com=num;
-  APP_LOG(APP_LOG_LEVEL_INFO,"GOT HERE");
-  dict_write_int(iter,key,&com,sizeof(int),true);
-  //Send the message
- APP_LOG(APP_LOG_LEVEL_INFO,"GOT HERE");
-  app_message_outbox_send();
-  APP_LOG(APP_LOG_LEVEL_INFO,"GOT HERE");
-}*/
-
-
 
 int main(void) {
   init();
